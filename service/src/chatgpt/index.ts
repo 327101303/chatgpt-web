@@ -62,7 +62,7 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
     if (isNotEmptyString(OPENAI_API_BASE_URL))
       options.apiBaseUrl = `${OPENAI_API_BASE_URL}/v1`
 
-    setupProxy(options)
+    // setupProxy(options)
 
     api = new ChatGPTAPI({ ...options })
     apiModel = 'ChatGPTAPI'
@@ -75,7 +75,7 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
       debug: !disableDebug,
     }
 
-    setupProxy(options)
+    // setupProxy(options)
 
     api = new ChatGPTUnofficialProxyAPI({ ...options })
     apiModel = 'ChatGPTUnofficialProxyAPI'
@@ -141,7 +141,7 @@ async function fetchUsage() {
 
   const options = {} as SetProxyOptions
 
-  setupProxy(options)
+  // setupProxy(options)
 
   try {
     // 获取已使用量

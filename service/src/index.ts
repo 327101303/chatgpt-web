@@ -5,6 +5,7 @@ import { chatConfig, chatReplyProcess, currentModel } from './chatgpt'
 import { auth } from './middleware/auth'
 import { limiter } from './middleware/limiter'
 import { isNotEmptyString } from './utils/is'
+import basicAuth, { BasicAuthResult } from 'express-basic-auth';
 
 const app = express()
 const router = express.Router()
@@ -81,6 +82,30 @@ router.post('/verify', async (req, res) => {
     res.send({ status: 'Fail', message: error.message, data: null })
   }
 })
+
+
+
+app.use(
+	basicAuth({
+		authorizer: myAuthorizer,
+		challenge: true,
+		unauthorizedResponse: getUnauthorizedResponse,})
+)
+// 自定义身份验证逻辑
+function myAuthorizer(
+	username: string,
+	password: string
+): boolean | Promise<boolean> | BasicAuthResult {
+	// 检查用户名和密码是否有效，可以根据需要自定义逻辑
+	const isValid = username === 'abc' && password === '123';
+	return isValid;
+}
+// 自定义未授权的响应函数
+function getUnauthorizedResponse(req) {
+	return req.auth
+		? 'Unauthorized'
+		: 'Please provide valid credentials';
+}
 
 app.use('', router)
 app.use('/api', router)
